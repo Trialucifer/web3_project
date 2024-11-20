@@ -11,14 +11,14 @@ task("deploy-fundme", "deploy and verify fundme contract").setAction(async(taskA
     fundMe.waitForDeployment();
     // console.log("contract has been deploye successfully, contract address is " + fundMe.target)
     console.log(`contract has been deploye successfully, contract address is ${fundMe.target}`)
-    if (hre.network.config.chainId == 11155111 && process.env.ETHERSCAN_API_KEY) {
-        //等5个区块,验证成功性更高
-        console.log("waiting for 5 confirmations")
-        await fundMe.deploymentTransaction().wait(5)
-        verifyFundMe(fundMe.target, 300)
-    }else {
-        console.log("verification skipped..")
-    }
+    // if (hre.network.config.chainId == 11155111 && process.env.ETHERSCAN_API_KEY) {
+    //     //等5个区块,验证成功性更高
+    //     console.log("waiting for 5 confirmations")
+    //     await fundMe.deploymentTransaction().wait(5)
+    //     verifyFundMe(fundMe.target, 300)
+    // }else {
+    //     console.log("verification skipped..")
+    // }
 })
 
 async function verifyFundMe(fundMeAddr, args) {
