@@ -3,6 +3,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@chainlink/env-enc").config();
 //自动去找 index.js文件
 require("./tasks")
+require("hardhat-deploy")
 const { ProxyAgent, setGlobalDispatcher } = require("undici");
 
 const SEPOLIA_URL = process.env.SEPOLIA_URL
@@ -19,6 +20,7 @@ setGlobalDispatcher(proxyAgent);
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.27",
+  defaultNetwork: "hardhat",
   networks: {
     sepolia: {
       //如果要部署真实的测试网，通过第三方服务商拿到免费的url Elchemy,Infura,QuickNode
@@ -30,6 +32,14 @@ module.exports = {
   etherscan: {
     apiKey: {
       sepolia: ETHERSCAN_API_KEY
+    }
+  },
+  namedAccounts: {
+    firstAccount: {
+      default: 0
+    },
+    secondAccount: {
+      default: 1
     }
   }
 };
