@@ -20,17 +20,20 @@ module.exports=async({getNamedAccounts, deployments}) => {
     //deployments中有很多属性，只引入了deploy deployments.deploy
     const {deploy} = deployments
     let dataFeedAddr
+    let confirmations
     if(devlopmentChains.includes(network.name)) {
         const mockV3Aggregator = await deployments.get("MockV3Aggregator")
         dataFeedAddr = mockV3Aggregator.address
+        confirmations = 0
     }else {
         dataFeedAddr = networkConfig[network.config.chainId].ethUsdDataFeed
+        confirmations = CONFIRMATIONS
     }
     const fundMe = await deploy("FundMe", {
         from: firstAccount, //由谁来部署
         args: [LOCK_TIME, dataFeedAddr],
         log: true,
-        waitConfirmations: CONFIRMATIONS  //await fundMe.deploymentTransaction().wait(5)
+        waitConfirmations: confirmations  //await fundMe.deploymentTransaction().wait(5)
     })
     //remove deployments directory or add --reset flag if you redeploy contract
 

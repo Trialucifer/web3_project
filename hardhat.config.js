@@ -4,6 +4,9 @@ require("@chainlink/env-enc").config();
 //自动去找 index.js文件
 require("./tasks")
 require("hardhat-deploy")
+require("@nomicfoundation/hardhat-ethers");
+require("hardhat-deploy");
+require("hardhat-deploy-ethers");
 const { ProxyAgent, setGlobalDispatcher } = require("undici");
 
 const SEPOLIA_URL = process.env.SEPOLIA_URL
@@ -21,6 +24,10 @@ setGlobalDispatcher(proxyAgent);
 module.exports = {
   solidity: "0.8.27",
   defaultNetwork: "hardhat",
+  mocha: {
+    //修改配置等待200秒，默认配置超过40秒就报错
+    timeout: 300000
+  },
   networks: {
     sepolia: {
       //如果要部署真实的测试网，通过第三方服务商拿到免费的url Elchemy,Infura,QuickNode
@@ -31,6 +38,7 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
+      //etherscan 进行合约验证是时候用的
       sepolia: ETHERSCAN_API_KEY
     }
   },
@@ -41,5 +49,8 @@ module.exports = {
     secondAccount: {
       default: 1
     }
+  },
+  gasReporter: {
+    enabled: false
   }
 };
